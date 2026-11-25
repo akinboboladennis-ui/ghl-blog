@@ -6,7 +6,7 @@ import { site } from '../../site';
 const faq = [
   {
     q: 'How do I receive the snapshot?',
-    a: 'Right after checkout you get an email with the GHL snapshot share link + the setup video + the 10-minute install checklist. Import it into any sub-account in minutes.',
+    a: 'Fill the order form below (or WhatsApp me). I confirm payment details and send the GHL snapshot share link + setup video + 10-minute install checklist by email. Import it into any sub-account in minutes.',
   },
   {
     q: 'What do I need before installing?',
@@ -22,9 +22,11 @@ const faq = [
   },
   {
     q: 'Can you install it for me instead?',
-    a: 'Yes — done-for-you install is available. Buy the snapshot, then book via the hire-me page and mention the snapshot; install labor is quoted fixed-price.',
+    a: 'Yes — done-for-you install is available. Order the snapshot, then book via the hire-me page and mention the snapshot; install labor is quoted fixed-price.',
   },
 ];
+
+const orderAction = `https://formsubmit.co/ajax/${site.contactEmail}`;
 ---
 
 <Base
@@ -66,17 +68,47 @@ const faq = [
     that's a <a class="underline" href="/hire-me">hire-me project</a>, not a $99 snapshot.
   </p>
 
-  <div class="mt-8 rounded-lg bg-emerald-600 p-6 text-center text-white">
-    <p class="text-2xl font-bold">$99 — one-time, yours forever</p>
-    <p class="mt-1 text-sm opacity-90">Snapshot share link + setup video + checklist, delivered by email</p>
-    <p class="mt-4">
-      <a
-        class="inline-block rounded bg-white px-6 py-3 font-bold text-emerald-700"
-        href={site.snapshotCheckoutUrl}
-      >
-        Get the snapshot →
-      </a>
+  <div class="mt-8 rounded-lg bg-emerald-600 p-6 text-white" data-order-box>
+    <p class="text-center text-2xl font-bold">$99 — one-time, yours forever</p>
+    <p class="mt-1 text-center text-sm opacity-90">
+      Order below — I confirm payment + deliver by email. Prefer chat?{' '}
+      <a class="underline" href={site.snapshotCheckoutUrl}>WhatsApp me →</a>
     </p>
+    <form class="mx-auto mt-4 max-w-md space-y-2" action={orderAction} method="post">
+      <input type="hidden" name="_subject" value="New Dentist Snapshot order ($99)" />
+      <input
+        type="hidden"
+        name="_autoresponse"
+        value="Thanks for ordering the Dentist Snapshot! I got your details and will reply within 24 hours with payment + delivery. — Dennis"
+      />
+      <input
+        class="w-full rounded border px-3 py-2 text-slate-900"
+        type="text"
+        name="name"
+        placeholder="Your name"
+        required
+      />
+      <input
+        class="w-full rounded border px-3 py-2 text-slate-900"
+        type="email"
+        name="email"
+        placeholder="Delivery email"
+        required
+      />
+      <input
+        class="w-full rounded border px-3 py-2 text-slate-900"
+        type="text"
+        name="business"
+        placeholder="Clinic / agency name (optional)"
+      />
+      <button
+        class="w-full rounded bg-white px-6 py-3 font-bold text-emerald-700 hover:bg-emerald-50"
+        type="submit"
+      >
+        Order the snapshot — $99 →
+      </button>
+    </form>
+    <p class="order-note mt-2 hidden text-center text-sm"></p>
   </div>
 
   <h2 class="mt-8 text-xl font-bold">FAQ</h2>
@@ -103,3 +135,36 @@ const faq = [
   </p>
   <div class="mt-3"><NewsletterForm compact /></div>
 </Base>
+
+<script>
+  const box = document.querySelector('[data-order-box] form');
+  if (box) {
+    const f = box as HTMLFormElement;
+    const note = f.parentElement?.querySelector('.order-note');
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = f.querySelector('button');
+      if (btn) btn.textContent = 'Sending…';
+      try {
+        const data = Object.fromEntries(new FormData(f).entries());
+        const res = await fetch(f.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error();
+        if (note) {
+          note.textContent = 'Order received! Check your email — I reply within 24 hours with payment + delivery.';
+          note.classList.remove('hidden');
+        }
+        f.reset();
+      } catch {
+        if (note) {
+          note.textContent = 'Something went wrong — please order via WhatsApp instead.';
+          note.classList.remove('hidden');
+        }
+      }
+      if (btn) btn.textContent = 'Order the snapshot — $99 →';
+    });
+  }
+</script>

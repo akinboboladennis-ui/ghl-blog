@@ -6,47 +6,72 @@ export interface Props {
 }
 
 const { compact = false } = Astro.props;
+// FormSubmit AJAX endpoint: notifies info@ + autoresponds to the visitor.
+const action = `https://formsubmit.co/ajax/${site.contactEmail}`;
 ---
 
-<div class="rounded-lg bg-emerald-50 p-4 dark:bg-emerald-950">
+<div class="rounded-lg bg-emerald-50 p-4 dark:bg-emerald-950" data-newsletter-form>
   <p class="font-bold text-emerald-900 dark:text-emerald-100">
     Free: GHL Launch Checklist + mini-snapshot
   </p>
-  {
-    site.newsletterEmbedUrl ? (
-      <iframe
-        src={site.newsletterEmbedUrl}
-        title="Subscribe to GHL Architect Notes"
-        class="mt-3 h-64 w-full rounded border bg-white"
-        loading="lazy"
-      />
-    ) : (
-      <>
-        <p class="mt-1 text-sm text-emerald-800 dark:text-emerald-200">
-          One practical GHL build per week. No spam, unsubscribe anytime.
-        </p>
-        {/* TODO: replace this placeholder with your GHL form embed.
-            In GHL: Sites > Forms > Builder > Embed — paste the <script>/<iframe> here. */}
-        <form
-          class:list={['mt-3 flex gap-2', { 'flex-col': compact }]}
-          action={`mailto:${site.contactEmail}`}
-          method="post"
-        >
-          <input
-            class="flex-1 rounded border px-3 py-2 text-slate-900"
-            type="email"
-            name="email"
-            placeholder="you@agency.com"
-            required
-          />
-          <button
-            class="rounded bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700"
-            type="submit"
-          >
-            Subscribe
-          </button>
-        </form>
-      </>
-    )
-  }
+  <p class="mt-1 text-sm text-emerald-800 dark:text-emerald-200">
+    One practical GHL build per week. No spam, unsubscribe anytime.
+  </p>
+  <form
+    class:list={['mt-3 flex gap-2', { 'flex-col': compact }]}
+    action={action}
+    method="post"
+  >
+    <input type="hidden" name="_subject" value="New GHL Architect Notes subscriber" />
+    <input
+      type="hidden"
+      name="_autoresponse"
+      value="Hi! You're on the GHL Architect Notes list. Your free GHL Launch Checklist + mini-snapshot is on its way — reply to this email if it doesn't arrive within a day. — Dennis"
+    />
+    <input
+      class="flex-1 rounded border px-3 py-2 text-slate-900"
+      type="email"
+      name="email"
+      placeholder="you@agency.com"
+      required
+    />
+    <button
+      class="rounded bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700"
+      type="submit"
+    >
+      Subscribe
+    </button>
+  </form>
+  <p class="form-note mt-2 hidden text-sm text-emerald-800 dark:text-emerald-200"></p>
 </div>
+
+<script>
+  document.querySelectorAll('[data-newsletter-form] form').forEach((form) => {
+    const f = form as HTMLFormElement;
+    const note = f.parentElement?.querySelector('.form-note');
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = f.querySelector('button');
+      if (btn) btn.textContent = 'Subscribing…';
+      try {
+        const res = await fetch(f.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ email: new FormData(f).get('email') }),
+        });
+        if (!res.ok) throw new Error();
+        if (note) {
+          note.textContent = 'You’re in! Check your inbox for the checklist + mini-snapshot.';
+          note.classList.remove('hidden');
+        }
+        f.reset();
+      } catch {
+        if (note) {
+          note.textContent = 'Something went wrong — please try again or WhatsApp me.';
+          note.classList.remove('hidden');
+        }
+      }
+      if (btn) btn.textContent = 'Subscribe';
+    });
+  });
+</script>

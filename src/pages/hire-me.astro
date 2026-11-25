@@ -1,5 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
+import { site } from '../site';
+
+const contactAction = `https://formsubmit.co/ajax/${site.contactEmail}`;
 ---
 
 <Base
@@ -32,15 +35,91 @@ import Base from '../layouts/Base.astro';
     US, Europe &amp; Australia, calls booked in your time zone.
   </p>
 
-  <h2 class="mt-6 text-xl font-bold">Next step</h2>
+  <h2 class="mt-6 text-xl font-bold">Get a fixed-price quote</h2>
   <p class="mt-2">
-    Book a free call or reach me directly:{' '}
-    <a class="underline" href="https://dennisakinbobola.com">dennisakinbobola.com</a> · WhatsApp{' '}
-    <strong>+234 807 6455 530</strong> · or{' '}
-    <a class="underline" href="https://www.upwork.com/">hire me on Upwork</a>.
+    Tell me your CRM + goal below — I reply within 24 hours. Prefer chat?{' '}
+    <a class="underline" href={site.whatsapp}>WhatsApp me →</a>
   </p>
-  <p class="mt-2 text-sm text-slate-500">
-    Budgets typically: under $1,000 to $10,000+ depending on scope — tell me your CRM and goals and
-    I'll scope a fixed-price build.
+  <div class="mt-4 rounded-lg border p-4" data-contact-box>
+    <form class="space-y-2" action={contactAction} method="post">
+      <input type="hidden" name="_subject" value="New hire-me inquiry from the blog" />
+      <input
+        type="hidden"
+        name="_autoresponse"
+        value="Thanks for reaching out! I got your project details and will reply within 24 hours with next steps. — Dennis"
+      />
+      <input
+        class="w-full rounded border px-3 py-2"
+        type="text"
+        name="name"
+        placeholder="Your name"
+        required
+      />
+      <input
+        class="w-full rounded border px-3 py-2"
+        type="email"
+        name="email"
+        placeholder="Email"
+        required
+      />
+      <input
+        class="w-full rounded border px-3 py-2"
+        type="text"
+        name="crm"
+        placeholder="What CRM do you use today? (e.g. GoHighLevel, none yet)"
+      />
+      <textarea
+        class="w-full rounded border px-3 py-2"
+        name="message"
+        rows="4"
+        placeholder="What do you want built?"
+        required
+      ></textarea>
+      <button
+        class="rounded bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700"
+        type="submit"
+      >
+        Request quote →
+      </button>
+    </form>
+    <p class="contact-note mt-2 hidden text-sm"></p>
+  </div>
+  <p class="mt-4 text-sm text-slate-500">
+    Budgets typically under $1,000 to $10,000+ depending on scope. Also on{' '}
+    <a class="underline" href="https://www.upwork.com/">Upwork</a> and{' '}
+    <a class="underline" href={site.officialSite}>dennisakinbobola.com</a>.
   </p>
 </Base>
+
+<script>
+  const box = document.querySelector('[data-contact-box] form');
+  if (box) {
+    const f = box as HTMLFormElement;
+    const note = f.parentElement?.querySelector('.contact-note');
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = f.querySelector('button');
+      if (btn) btn.textContent = 'Sending…';
+      try {
+        const data = Object.fromEntries(new FormData(f).entries());
+        const res = await fetch(f.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error();
+        if (note) {
+          note.textContent = 'Sent! I reply within 24 hours — check your inbox.';
+          note.classList.remove('hidden');
+        }
+        f.reset();
+      } catch {
+        if (note) {
+          note.textContent = 'Something went wrong — please WhatsApp me instead.';
+          note.classList.remove('hidden');
+        }
+      }
+      if (btn) btn.textContent = 'Request quote →';
+    });
+  }
+</script>

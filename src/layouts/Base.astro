@@ -1,4 +1,7 @@
 ---
+import Analytics from '../components/Analytics.astro';
+import '../styles/global.css';
+
 export interface Props {
   title: string;
   description: string;
@@ -6,8 +9,6 @@ export interface Props {
 
 const { title, description } = Astro.props;
 const siteName = 'Dennis Akinbobola — GHL Architect';
-// TODO: paste your Plausible/Umami analytics script src here, or leave empty.
-const analyticsSrc = '';
 ---
 
 <!doctype html>
@@ -21,7 +22,7 @@ const analyticsSrc = '';
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    {analyticsSrc && <script defer data-domain="blog.dennisakinbobola.com" src={analyticsSrc} />}
+    <Analytics />
   </head>
   <body class="bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
     <div class="mx-auto max-w-3xl px-5">

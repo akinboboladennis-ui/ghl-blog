@@ -11,15 +11,39 @@ npm run dev     # local dev
 npm run build   # static build -> dist/
 ```
 
+## How the forms work (no accounts needed)
+
+- **Newsletter** (`NewsletterForm.astro`, on home + `/newsletter` + product page):
+  posts via FormSubmit AJAX to **info@dennisakinbobola.com**.
+- **Snapshot orders** (`/products/dentist-snapshot/`): same route, subject
+  "New Dentist Snapshot order ($99)". Buy button → WhatsApp until a real
+  checkout link is set in `src/site.ts`.
+- **Hire-me quote form** (`/hire-me/`): same route, subject "New hire-me inquiry".
+- **Both sides notified:** you get an email per fill; the visitor gets an
+  instant autoresponse email.
+- **Activation (one-time):** after deploy, submit each form once yourself —
+  FormSubmit emails you a confirmation link. Click it. Done forever.
+
+## To switch to paid checkouts / real ESP later
+
+- `src/site.ts` → `snapshotCheckoutUrl`: paste Gumroad/Lemon Squeezy URL.
+- Newsletter: paste ConvertKit/Beehiiv/GHL embed into `NewsletterForm.astro`.
+
+## Analytics
+
+Vercel Web Analytics via script snippet (`src/components/Analytics.astro`) —
+zero config, live automatically on Opus deploys. Enable it in the Opus
+project dashboard (Analytics tab) if prompted.
+
 ## Launch checklist
 
-- [x] Domain set: `blog.dennisakinbobola.com` (astro.config.mjs, robots.txt, analytics slot)
-- [x] GHL affiliate link live (`src/site.ts` → `ghlAffiliate`)
-- [ ] `src/site.ts`: set `snapshotCheckoutUrl` (Gumroad/Lemon Squeezy link)
-- [ ] `src/site.ts`: set `newsletterEmbedUrl` (or paste GHL form embed in `NewsletterForm.astro`)
-- [ ] `src/layouts/Base.astro`: set `analyticsSrc` (Plausible/Umami)
+- [x] Domain set: `blog.dennisakinbobola.com`
+- [x] GHL affiliate link live (`src/site.ts`)
+- [x] Contact email: info@dennisakinbobola.com
+- [x] Forms route to inbox + autorespond
+- [ ] `npm install && npm run build` green
+- [ ] Activate FormSubmit (submit each form once, click confirmation)
 - [ ] Deploy per [DEPLOY.md](DEPLOY.md), submit sitemap to Search Console
-- [ ] Test: newsletter signup, affiliate click, checkout button
 
 ## Content
 
