@@ -1,0 +1,29 @@
+---
+title: 'GHL Snapshots Explained: Clone Winning Accounts in Minutes'
+description: 'What GoHighLevel snapshots include, how to build a sellable snapshot, and the mistakes that break restores.'
+pubDate: 2026-11-24
+tags: ['gohighlevel', 'snapshots', 'tutorial']
+---
+
+Snapshots are GHL's unfair advantage: package an entire working account — funnels, workflows, calendars, custom fields — and deploy it to a new sub-account in minutes.
+
+## What a snapshot carries
+
+Pipelines, workflows, triggers/links, forms, surveys, calendars, funnels/websites, email/SMS templates, custom values and fields, and (partially) integrations. API keys and Twilio numbers do **not** carry over — plan for that.
+
+## Building a sellable snapshot
+
+1. Build in a clean demo sub-account, never a live client.
+2. Replace all real data with `{{ test }}` placeholders and generic branding.
+3. Document the 10-minute setup: what to connect (domain, Twilio/A2P, Stripe, calendar), in what order.
+4. Version it: `dentist-v1.2`. Keep a changelog — restores overwrite.
+
+## Mistakes that break restores
+
+- Hardcoded user assignments (assign to "account user" roles, not names).
+- Workflows referencing deleted assets.
+- Forgetting A2P 10DLC re-registration per sub-account (see my A2P post).
+
+Snapshots are also a product: see my own [Dentist Snapshot ($99)](/products/dentist-snapshot/) for what a packaged build looks like.
+
+*Related: [GHL pricing — which plan you need for snapshots](/blog/gohighlevel-pricing-2026/).*

@@ -1,0 +1,28 @@
+---
+title: 'GHL API & Webhooks: Connecting GoHighLevel to Anything'
+description: 'Practical guide to GoHighLevel webhooks, API v2, custom values, and patterns for Stripe, OpenAI, and custom apps.'
+pubDate: 2026-11-24
+tags: ['gohighlevel', 'api', 'integrations', 'tutorial']
+---
+
+This is the post that separates architects from button-clickers. GHL's API + webhooks connect it to anything.
+
+## The three integration paths
+
+1. **Outbound webhook** (GHL → your app): workflow action POSTs contact + custom fields as JSON. Use for fulfillment, AI scoring, custom dashboards.
+2. **Inbound webhook / API v2** (your app → GHL): create/update contacts, add to workflows, create opportunities. Needs a Private Integration token (Agency Settings → Company).
+3. **Workflow Webhook Response**: pause a workflow, call your API, and branch on the result (e.g. AI lead score > 70 → fast-track to sales).
+
+## Patterns I reuse
+
+- **Stripe → GHL:** payment webhook → update opportunity to Won + trigger onboarding workflow.
+- **OpenAI → GHL:** new lead → summarize + score → write back to custom fields → route hot leads to call queue.
+- **Custom app → GHL:** sync user signup as contact with `source: saas-trial`, enroll in trial-nurture workflow.
+
+## Gotchas
+
+- API v2 rate limits: queue bulk syncs, don't loop per-contact from a workflow.
+- Always store raw webhook payloads for 30 days — debugging without them is hell.
+- Use custom values for secrets, never hardcode tokens in workflow URLs.
+
+*Need a custom GHL integration? [Hire me](/hire-me).*

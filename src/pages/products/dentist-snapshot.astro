@@ -1,0 +1,105 @@
+---
+import Base from '../../layouts/Base.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+import { site } from '../../site';
+
+const faq = [
+  {
+    q: 'How do I receive the snapshot?',
+    a: 'Right after checkout you get an email with the GHL snapshot share link + the setup video + the 10-minute install checklist. Import it into any sub-account in minutes.',
+  },
+  {
+    q: 'What do I need before installing?',
+    a: 'A GoHighLevel account (any plan with sub-accounts for agency use), your domain connected, a Twilio number with A2P 10DLC approved, and Stripe connected for payments. The checklist walks through each in order.',
+  },
+  {
+    q: 'Will it work for my specialty, not just general dentistry?',
+    a: 'Yes — it was built for implant/invisalign-style high-ticket offers plus hygiene recall, so it ports cleanly to ortho, med spa, and other appointment-based clinics. Custom values make rebranding a 20-minute job.',
+  },
+  {
+    q: 'What if something is broken on arrival?',
+    a: 'Install it following the checklist and if any workflow is broken on arrival, I fix it free. Reply to the delivery email with a screenshot and I sort it out.',
+  },
+  {
+    q: 'Can you install it for me instead?',
+    a: 'Yes — done-for-you install is available. Buy the snapshot, then book via the hire-me page and mention the snapshot; install labor is quoted fixed-price.',
+  },
+];
+---
+
+<Base
+  title="Dentist Snapshot — Complete GHL Build for Dental Clinics ($99)"
+  description="Buy the dentist GoHighLevel snapshot: funnels, calendars, follow-up workflows, recall campaigns, and review engine. Built by Dennis Akinbobola, HighLevel Certified Admin."
+>
+  <p class="pt-8 text-sm"><a class="underline" href="/">← Home</a></p>
+  <h1 class="py-4 text-3xl font-bold">The Dentist Snapshot — $99</h1>
+  <p class="text-lg text-slate-600 dark:text-slate-300">
+    The complete GoHighLevel build I install for dental clinics. Same architecture behind a
+    med-spa client's <strong>10% → 40% lead-to-booking lift</strong> — packaged so you install it
+    in an afternoon instead of building for weeks.
+  </p>
+  <p class="mt-2 text-sm text-slate-500">
+    By Dennis Akinbobola, HighLevel Certified Admin · 60+ Upwork jobs · Top Rated Plus
+  </p>
+
+  <h2 class="mt-8 text-xl font-bold">What's inside (7 modules)</h2>
+  <ul class="mt-2 list-disc pl-6">
+    <li><strong>Offer funnel</strong> — implant/invisalign-style page + calendar embed with SMS bump reminders</li>
+    <li><strong>Calendars</strong> — new-patient exam + hygiene recall, buffers, intake forms</li>
+    <li><strong>Speed-to-lead</strong> — instant SMS on booking/form fill, missed-call textback</li>
+    <li><strong>Reminders</strong> — 24h + 2h SMS/email sequences that kill no-shows</li>
+    <li><strong>No-show rescue</strong> — automatic rebook sequence with incentive</li>
+    <li><strong>Recall campaigns</strong> — 6/12-month hygiene reminders + dormant-patient reactivation</li>
+    <li><strong>Review engine</strong> — post-visit Google-review request with sentiment routing</li>
+    <li><strong>Pipeline</strong> — New → Booked → Showed → Treatment Accepted → Lost, with per-stage follow-up</li>
+    <li><strong>Docs</strong> — setup video + 10-minute install checklist (domain, A2P, Stripe, calendar)</li>
+  </ul>
+
+  <h2 class="mt-8 text-xl font-bold">Who it's for / not for</h2>
+  <p class="mt-2">
+    <strong>For:</strong> dental/ortho/med-spa clinics on GHL, and agencies serving them who want a
+    proven install. Requires a GHL account (
+    <a class="underline" href={site.ghlAffiliate}>my affiliate link</a> — paid link).
+  </p>
+  <p class="mt-2">
+    <strong>Not for:</strong> non-appointment businesses, or anyone wanting custom development —
+    that's a <a class="underline" href="/hire-me">hire-me project</a>, not a $99 snapshot.
+  </p>
+
+  <div class="mt-8 rounded-lg bg-emerald-600 p-6 text-center text-white">
+    <p class="text-2xl font-bold">$99 — one-time, yours forever</p>
+    <p class="mt-1 text-sm opacity-90">Snapshot share link + setup video + checklist, delivered by email</p>
+    <p class="mt-4">
+      <a
+        class="inline-block rounded bg-white px-6 py-3 font-bold text-emerald-700"
+        href={site.snapshotCheckoutUrl}
+      >
+        Get the snapshot →
+      </a>
+    </p>
+  </div>
+
+  <h2 class="mt-8 text-xl font-bold">FAQ</h2>
+  <dl class="mt-2 space-y-4">
+    {
+      faq.map((item) => (
+        <div class="rounded border p-4">
+          <dt class="font-bold">{item.q}</dt>
+          <dd class="mt-1 text-slate-600 dark:text-slate-300">{item.a}</dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <h2 class="mt-8 text-xl font-bold">Guarantee</h2>
+  <p class="mt-2">
+    Install it with the checklist and if a workflow is broken on arrival, I fix it free. Full
+    teardown in the <a class="underline" href="/blog/dentist-snapshot-walkthrough/">walkthrough post</a>.
+  </p>
+
+  <h2 class="mt-8 text-xl font-bold">Not ready to buy?</h2>
+  <p class="mt-2">
+    Get the free mini-snapshot (booking + reminders) via the newsletter:
+  </p>
+  <div class="mt-3"><NewsletterForm compact /></div>
+</Base>

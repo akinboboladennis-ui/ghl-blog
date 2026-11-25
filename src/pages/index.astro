@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 10);
+---
+
+<Base
+  title="Dennis Akinbobola — GoHighLevel Architect, CRM & AI Automation"
+  description="Practical GoHighLevel tutorials, comparisons, and agency architecture guides from Dennis Akinbobola, HighLevel Certified Admin. Pipelines, workflows, snapshots, AI agents."
+>
+  <header class="py-10">
+    <p class="text-sm font-semibold uppercase tracking-widest text-emerald-600">
+      Dennis Akinbobola · HighLevel Certified Admin
+    </p>
+    <h1 class="mt-2 text-4xl font-bold leading-tight">
+      "I turn messy CRMs into systems that sell."
+    </h1>
+    <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">
+      Practical GoHighLevel builds from 60+ Upwork jobs: pipelines, workflows, snapshots, AI
+      receptionists, and integrations for clinics, coaches, and agencies.
+    </p>
+    <p class="mt-4 text-slate-600 dark:text-slate-300">
+      <a class="underline" href="/about">About Dennis</a> ·{' '}
+      <a class="underline" href="https://dennisakinbobola.com">Official site →</a> ·{' '}
+      <a class="underline" href="/products/">Products →</a> ·{' '}
+      <a class="underline" href="/hire-me">Hire me →</a>
+    </p>
+    <div class="mt-6"><NewsletterForm /></div>
+  </header>
+
+  <main>
+    <h2 class="text-2xl font-bold">Latest posts</h2>
+    <ul class="mt-4 space-y-6">
+      {
+        posts.map((post) => (
+          <li class="border-b border-slate-200 pb-6 dark:border-slate-800">
+            <a class="text-xl font-semibold hover:underline" href={`/blog/${post.id.replace(/\.mdx$/, '')}/`}>
+              {post.data.title}
+            </a>
+            <p class="mt-1 text-slate-600 dark:text-slate-300">{post.data.description}</p>
+            <p class="mt-1 text-sm text-slate-500">
+              {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+    {
+      posts.length === 0 && (
+        <p class="mt-4 text-slate-600">First posts are on the way — check back soon.</p>
+      )
+    }
+  </main>
+
+  <footer class="py-10 text-sm text-slate-500">
+    <p>
+      <a class="underline" href="/about">About</a> ·{' '}
+      <a class="underline" href="/resources">Resources</a> ·{' '}
+      <a class="underline" href="/products/">Products</a> ·{' '}
+      <a class="underline" href="/hire-me">Hire me</a> ·{' '}
+      <a class="underline" href="/disclosure">Affiliate disclosure</a>
+    </p>
+    <p class="mt-2">
+      © 2026 Dennis Akinbobola · <a class="underline" href="https://dennisakinbobola.com">dennisakinbobola.com</a>
+    </p>
+  </footer>
+</Base>

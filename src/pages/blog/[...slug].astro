@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/\.mdx$/, '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Base title={post.data.title} description={post.data.description}>
+  <p class="pt-8 text-sm"><a class="underline" href="/">← Home</a></p>
+  <article class="prose py-6 dark:prose-invert">
+    <h1>{post.data.title}</h1>
+    <p>
+      {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+    </p>
+    <Content />
+  </article>
+  <aside class="my-8 rounded-lg bg-slate-100 p-4 text-sm dark:bg-slate-900">
+    <p>
+      <strong>Disclosure:</strong> some links on this site are affiliate links. I earn a commission
+      if you buy through my link, at no extra cost to you. See the{' '}
+      <a class="underline" href="/disclosure">full disclosure</a>.
+    </p>
+    <p class="mt-2">
+      Need this built for your agency? <a class="underline" href="/hire-me">Hire me →</a>
+    </p>
+  </aside>
+</Base>

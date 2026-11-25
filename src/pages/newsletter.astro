@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+---
+
+<Base
+  title="Newsletter — GHL Architect Notes"
+  description="Join the GHL Architect Notes newsletter: one practical GoHighLevel build, automation, or teardown per week."
+>
+  <p class="pt-8 text-sm"><a class="underline" href="/">← Home</a></p>
+  <h1 class="py-4 text-3xl font-bold">GHL Architect Notes</h1>
+  <p>
+    One practical GoHighLevel build, automation, or teardown per week. Plus the free GHL launch
+    checklist + mini-snapshot when you join.
+  </p>
+  <div class="mt-6"><NewsletterForm /></div>
+  <p class="mt-4 text-sm text-slate-500">
+    Recent topics: <a class="underline" href="/blog/med-spa-followup-system/">med-spa 10%→40% system</a> ·{' '}
+    <a class="underline" href="/blog/ai-agents-inside-ghl/">AI agents in GHL</a> ·{' '}
+    <a class="underline" href="/blog/crm-automations-first-seven/">7 automations first</a>
+  </p>
+</Base>

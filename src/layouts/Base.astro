@@ -1,0 +1,31 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const siteName = 'Dennis Akinbobola — GHL Architect';
+// TODO: paste your Plausible/Umami analytics script src here, or leave empty.
+const analyticsSrc = '';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | {siteName}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {analyticsSrc && <script defer data-domain="blog.dennisakinbobola.com" src={analyticsSrc} />}
+  </head>
+  <body class="bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+    <div class="mx-auto max-w-3xl px-5">
+      <slot />
+    </div>
+  </body>
+</html>

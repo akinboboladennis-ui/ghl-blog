@@ -1,0 +1,52 @@
+---
+import { site } from '../site';
+
+export interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class="rounded-lg bg-emerald-50 p-4 dark:bg-emerald-950">
+  <p class="font-bold text-emerald-900 dark:text-emerald-100">
+    Free: GHL Launch Checklist + mini-snapshot
+  </p>
+  {
+    site.newsletterEmbedUrl ? (
+      <iframe
+        src={site.newsletterEmbedUrl}
+        title="Subscribe to GHL Architect Notes"
+        class="mt-3 h-64 w-full rounded border bg-white"
+        loading="lazy"
+      />
+    ) : (
+      <>
+        <p class="mt-1 text-sm text-emerald-800 dark:text-emerald-200">
+          One practical GHL build per week. No spam, unsubscribe anytime.
+        </p>
+        {/* TODO: replace this placeholder with your GHL form embed.
+            In GHL: Sites > Forms > Builder > Embed — paste the <script>/<iframe> here. */}
+        <form
+          class:list={['mt-3 flex gap-2', { 'flex-col': compact }]}
+          action={`mailto:${site.contactEmail}`}
+          method="post"
+        >
+          <input
+            class="flex-1 rounded border px-3 py-2 text-slate-900"
+            type="email"
+            name="email"
+            placeholder="you@agency.com"
+            required
+          />
+          <button
+            class="rounded bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700"
+            type="submit"
+          >
+            Subscribe
+          </button>
+        </form>
+      </>
+    )
+  }
+</div>
